@@ -655,9 +655,11 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	public void parseMetaElements(Element ele, BeanMetadataAttributeAccessor attributeAccessor) {
+		//获取当前节点的所有子元素
 		NodeList nl = ele.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node node = nl.item(i);
+			//提取meta
 			if (isCandidateElement(node) && nodeNameEquals(node, META_ELEMENT)) {
 				Element metaElement = (Element) node;
 				String key = metaElement.getAttribute(KEY_ATTRIBUTE);
@@ -934,8 +936,9 @@ public class BeanDefinitionParserDelegate {
 				}
 			}
 		}
-
+		//ref
 		boolean hasRefAttribute = ele.hasAttribute(REF_ATTRIBUTE);
+		//value
 		boolean hasValueAttribute = ele.hasAttribute(VALUE_ATTRIBUTE);
 		if ((hasRefAttribute && hasValueAttribute) ||
 				((hasRefAttribute || hasValueAttribute) && subElement != null)) {
@@ -1413,6 +1416,7 @@ public class BeanDefinitionParserDelegate {
 			Node node, BeanDefinitionHolder originalDef, @Nullable BeanDefinition containingBd) {
 
 		String namespaceUri = getNamespaceURI(node);
+		//非默认标签进行装饰
 		if (namespaceUri != null && !isDefaultNamespace(namespaceUri)) {
 			NamespaceHandler handler = this.readerContext.getNamespaceHandlerResolver().resolve(namespaceUri);
 			if (handler != null) {
