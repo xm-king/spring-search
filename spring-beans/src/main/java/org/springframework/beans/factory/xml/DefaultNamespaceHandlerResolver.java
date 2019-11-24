@@ -118,6 +118,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	public NamespaceHandler resolve(String namespaceUri) {
 		//获取所有已经配置的Handler映射
 		Map<String, Object> handlerMappings = getHandlerMappings();
+		//根据命名空间找到对应的信息
 		Object handlerOrClassName = handlerMappings.get(namespaceUri);
 		if (handlerOrClassName == null) {
 			return null;
@@ -136,7 +137,9 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 				}
 				//调用初始化方法
 				NamespaceHandler namespaceHandler = (NamespaceHandler) BeanUtils.instantiateClass(handlerClass);
+				//初始化
 				namespaceHandler.init();
+				//放入缓存
 				handlerMappings.put(namespaceUri, namespaceHandler);
 				return namespaceHandler;
 			}
@@ -164,6 +167,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 						logger.trace("Loading NamespaceHandler mappings from [" + this.handlerMappingsLocation + "]");
 					}
 					try {
+						//地址默认为META-INF/Spring.handlers
 						Properties mappings =
 								PropertiesLoaderUtils.loadAllProperties(this.handlerMappingsLocation, this.classLoader);
 						if (logger.isTraceEnabled()) {
