@@ -424,7 +424,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	@Override
 	public Object applyBeanPostProcessorsAfterInitialization(Object existingBean, String beanName)
 			throws BeansException {
-
+		//Bean初始化后需要对注册的BeanPostProcessor的postProcessAfterInitianlization方法进行处理
 		Object result = existingBean;
 		for (BeanPostProcessor processor : getBeanPostProcessors()) {
 			Object current = processor.postProcessAfterInitialization(result, beanName);
@@ -504,7 +504,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		try {
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
-			// 如果Bean配置了BeanPostProcessor，则返回一个代理对象,短路判断
+			// 如果Bean配置了BeanPostProcessor，则返回一个代理对象,短路判断，例如AOP的判断
 			Object bean = resolveBeforeInstantiation(beanName, mbdToUse);
 			if (bean != null) {
 				return bean;
@@ -1107,8 +1107,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
 				Class<?> targetType = determineTargetType(beanName, mbd);
 				if (targetType != null) {
+					//实例化前的后置处理器应用
 					bean = applyBeanPostProcessorsBeforeInstantiation(targetType, beanName);
 					if (bean != null) {
+						//实例化后的后置处理器应用
 						bean = applyBeanPostProcessorsAfterInitialization(bean, beanName);
 					}
 				}

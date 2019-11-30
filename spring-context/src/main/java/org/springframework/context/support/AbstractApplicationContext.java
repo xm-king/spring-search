@@ -524,22 +524,28 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
 
 			// Prepare the bean factory for use in this context.
+			// 对BeanFactory进行各种功能填充
 			prepareBeanFactory(beanFactory);
 
 			try {
 				// Allows post-processing of the bean factory in context subclasses.
+				// 子类覆盖方法做额外的处理
 				postProcessBeanFactory(beanFactory);
 
 				// Invoke factory processors registered as beans in the context.
+				//
 				invokeBeanFactoryPostProcessors(beanFactory);
 
 				// Register bean processors that intercept bean creation.
+				// 注册Bean处理器，
 				registerBeanPostProcessors(beanFactory);
 
 				// Initialize message source for this context.
+				// 初始化Message Source
 				initMessageSource();
 
 				// Initialize event multicaster for this context.
+				// 初始化应用消息广播器
 				initApplicationEventMulticaster();
 
 				// Initialize other special beans in specific context subclasses.
@@ -585,6 +591,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 	 */
 	protected void prepareRefresh() {
 		// Switch to active.
+		// 系统属性/环境变量初始化
 		this.startupDate = System.currentTimeMillis();
 		this.closed.set(false);
 		this.active.set(true);

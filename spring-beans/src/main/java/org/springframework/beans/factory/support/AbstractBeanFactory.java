@@ -257,13 +257,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.trace("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
+			//返回对应的实例
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
 
 		else {
 			// Fail if we're already creating this bean instance:
 			// We're assumably within a circular reference.
-			// 循环依赖检查
+			// 循环依赖检查,protoType模式下的循环依赖会报错
 			if (isPrototypeCurrentlyInCreation(beanName)) {
 				throw new BeanCurrentlyInCreationException(beanName);
 			}
@@ -1141,6 +1142,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 	 * @return the transformed bean name
 	 */
 	protected String transformedBeanName(String name) {
+		/**
+		 * 1. FactoryBean
+		 * 2. alias别名
+		 */
 		return canonicalName(BeanFactoryUtils.transformedBeanName(name));
 	}
 

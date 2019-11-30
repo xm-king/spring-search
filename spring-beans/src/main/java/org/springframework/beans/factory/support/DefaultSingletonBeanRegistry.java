@@ -162,6 +162,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	@Override
 	@Nullable
 	public Object getSingleton(String beanName) {
+		//参数true设置标识允许早期依赖
 		return getSingleton(beanName, true);
 	}
 
@@ -206,6 +207,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 */
 	public Object getSingleton(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(beanName, "Bean name must not be null");
+		//全局变量需要同步
 		synchronized (this.singletonObjects) {
 			Object singletonObject = this.singletonObjects.get(beanName);
 			if (singletonObject == null) {
