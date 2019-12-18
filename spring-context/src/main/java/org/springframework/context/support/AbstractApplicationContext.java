@@ -513,7 +513,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 
 	@Override
 	public void refresh() throws BeansException, IllegalStateException {
-		//加锁
+		//刷新和销毁必须是同步的，加锁
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
 			// 上下文刷新的前置工作
@@ -606,6 +606,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		}
 
 		// Initialize any placeholder property sources in the context environment.
+		// 解析占位符
 		initPropertySources();
 
 		// Validate that all properties marked as required are resolvable:
